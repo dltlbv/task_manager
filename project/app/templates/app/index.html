@@ -1,0 +1,12 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="cont">
+    <h1>Управляйте задачами, преобразуйте время в достижения.</h1>
+    <h5>Упрощайте жизнь: эффективное управление задачами для вас и вашей команды.</h5>
+    <button class="click-but" onclick="window.location.href='{% url 'login' %}'">Войти</button>
+    <button class="click-but" onclick="window.location.href='{% url 'register' %}'">Регистрация</button>
+</div>
+{% endblock %}

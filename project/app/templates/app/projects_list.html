@@ -1,0 +1,48 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+    <h1>Список проектов</h1>
+    <ul class="project-list">
+        {% for project in projects %}
+        <li class="project-item">
+            <div class="project-card">
+                <div class="project-header">
+                    <a class="project-title" href="{% url 'project_detail' pk=project.pk %}">{{ project.title }}</a>
+                </div>
+                <ul class="task-list">
+                    {% for task in user_tasks %}
+                        {% if task.project == project %}
+                        <li class="task-item">
+                            <span class="task-title">{{ task.title }}</span>
+                            <span class="task-status">{{ task.get_status_display }}</span>
+                            {% if project.owner == request.user %}
+                                <a class="task-action" href="{% url 'task_edit' pk=task.pk %}">Изменить</a>
+                                <a class="task-action" href="{% url 'task_delete' pk=task.pk %}">Удалить</a>
+                            {% elif task.assigned_to == request.user and task.status != 'done' %}
+                                <a class="task-action" href="{% url 'task_edit' pk=task.pk %}">Изменить</a>
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                    <li class="task-item">Нет задач</li>
+                    {% endfor %}
+                    {% if project.owner == request.user %}
+                    <li class="task-create"><a class="project-task-create" href="{% url 'task_create' project_pk=project.pk %}"><span class="plus">+</span> Добавить задачу</a></li>
+                    {% endif %}
+                </ul>
+                {% if project.owner == request.user %}
+                <div class="project-actions">
+                    <a class="project-action" href="{% url 'project_edit' pk=project.pk %}">Изменить проект</a>
+                    <a class="project-action" href="{% url 'project_delete' pk=project.pk %}">Удалить проект</a>
+                </div>
+                {% endif %}
+            </div>
+        </li>
+        {% empty %}
+        <li class="project-item">Нет проектов</li>
+        {% endfor %}
+    </ul>
+    <button class="click-but" onclick="window.location.href='{% url 'project_create' %}'">Создать проект</button>
+{% endblock %}

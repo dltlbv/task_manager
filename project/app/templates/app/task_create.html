@@ -1,0 +1,14 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Create Task{% endblock %}
+
+{% block content %}
+    <h1>Создать задачу</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="form-button" type="submit">Создать</button>
+    </form>
+    <div class="canc-block">
+    <a class="cancel" href="{% url 'projects_list' %}">Отмена</a></div>
+{% endblock %}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My project{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="navbar-logo" href="/">
+                <img src="{% static 'app/images/logo_icon.png' %}" alt="logo">
+            </a>
+            <h1 class="navbar-title">Task Manager</h1>
+            <div class="navbar-menu" id="navbarNav">
+                <ul>
+                    {% if user.is_authenticated %}                    
+                    <li>
+                        <a class="navbar-link" href="{% url 'profile' %}" method="post">Моя страница</a>
+                    </li>
+                    <li>
+                        <a class="navbar-link" href="{% url 'projects_list' %}">Проекты</a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button class="logout-but" type="submit">Выйти</button>
+                        </form>
+                    </li>
+                    {% else %}
+                        <li><a class="navbar-link" href="{% url 'login' %}">Вход</a></li>
+                        <li><a class="navbar-link" href="{% url 'register' %}">Регистрация</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="line"></div>
+    <main>
+        
+        {% block content %}{% endblock %}
+        
+    </main>
+    <footer>
+        <p>&copy; 2024 </p>
+    </footer>
+</body>
+</html>

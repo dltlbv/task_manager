@@ -1,0 +1,124 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Project Detail{% endblock %}
+
+{% block content %}
+    <div class="project-title">
+        <h1>{{ project.title }}</h1>
+    </div>
+    <div class="project_description">
+        <h5>Описание:</h5>
+        <p class="descrp">{{ project.description }}</p>
+        <h5>Владелец:</h5>
+        <p class="descrp">{{ project.owner }}</p>
+    </div>
+    <div class="task-list-container">
+        <div class="task-h">
+            <h3>Создано:</h3>
+        </div>
+        <ul class="task-list">
+            {% for task in tasks %}
+                {% if task.status == "created" %}
+                    <li class="task-item2 created">
+                        <div class="task-details">
+                            <span class="task-title">{{ task.title }}</span>
+                            <div class="task-info">
+                                <p>{{ task.description }}</p>
+                                <p>Назначено: {{ task.assigned_to.username }}</p>
+                                <p>Создано: {{ task.date_created|date:"d.m.y" }}</p>
+                                <p>Дедлайн: {{ task.due_date|date:"d.m.y" }}</p>
+                            </div>
+                            {% if is_owner or is_owner and task.assigned_to == request.user %}
+                            <div class="project-actions">
+                                <a class="task-action" href="{% url 'task_edit' pk=task.pk %}">Изменить</a>
+                                <a class="task-action" href="{% url 'task_delete' pk=task.pk %}">Удалить</a>
+                            </div>
+                            {% elif task.assigned_to == request.user %}
+                            <div class="project-actions">
+                                <a class="task-action" href="{% url 'task_edit' pk=task.pk %}">Изменить</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+            {% empty %}
+                <li class="task-item">Нет задач</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="task-list-container">
+        <div class="task-h">
+            <h3>В процессе:</h3>
+        </div>
+        <ul class="task-list">
+            {% for task in tasks %}
+                {% if task.status == "in_progress" %}
+                    <li class="task-item2 in_progress">
+                        <div class="task-details">
+                            <span class="task-title">{{ task.title }}</span>
+                            <div class="task-info">
+                                <p>{{ task.description }}</p>
+                                <p>Назначено: {{ task.assigned_to.username }}</p>
+                                <p>Создано: {{ task.date_created|date:"d.m.y" }}</p>
+                                <p>Дедлайн: {{ task.due_date|date:"d.m.y" }}</p>
+                            </div>
+                            {% if is_owner or task.assigned_to == request.user %}
+                            <div class="project-actions">
+                                <a class="task-action" href="{% url 'task_edit' pk=task.pk %}">Изменить</a>
+                                <a class="task-action" href="{% url 'task_delete' pk=task.pk %}">Удалить</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+            {% empty %}
+                <li class="task-item">Нет задач</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="task-list-container">
+        <div class="task-h">
+            <h3>Готово:</h3>
+        </div>
+        <ul class="task-list">
+            {% for task in tasks %}
+                {% if task.status == "done" %}
+                    <li class="task-item2 done">
+                        <div class="task-details">
+                            <span class="task-title">{{ task.title }}</span>
+                            <div class="task-info">
+                                <p>{{ task.description }}</p>
+                                <p>Назначено: {{ task.assigned_to.username }}</p>
+                                <p>Создано: {{ task.date_created|date:"d.m.y" }}</p>
+                                <p>Дедлайн: {{ task.due_date|date:"d.m.y" }}</p>
+                            </div>
+                            {% if is_owner %}
+                            <div class="project-actions">
+                                <a class="task-action" href="{% url 'task_edit' pk=task.pk %}">Изменить</a>
+                                <a class="task-action" href="{% url 'task_delete' pk=task.pk %}">Удалить</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+            {% empty %}
+                <li class="task-item">Нет задач</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if is_owner %}
+    <div class="task-create">
+        <a class="project-task-create" href="{% url 'task_create' project_pk=project.pk %}">
+            <span class="plus">+</span> Добавить задачу
+        </a>
+    </div>
+    {% endif %}
+    {% if is_owner %}
+    <div class="project-actions">
+        <a class="project-action" href="{% url 'project_edit' pk=project.pk %}">Изменить проект</a>
+        <a class="project-action" href="{% url 'project_delete' pk=project.pk %}">Удалить проект</a>
+    </div>
+    {% endif %}
+{% endblock %}

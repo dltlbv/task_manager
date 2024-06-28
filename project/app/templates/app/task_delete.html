@@ -1,0 +1,14 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Delete Task{% endblock %}
+
+{% block content %}
+    <h1>Удалить Задачу</h1>
+    <p>Вы уверены, что хотите удалить "{{ task.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="form-button" type="submit">Да</button>
+    </form>
+    <div class="canc-block">
+    <a class="cancel" href="{% url 'projects_list' %}">Отмена</a></div>
+{% endblock %}

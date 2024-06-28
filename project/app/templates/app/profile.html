@@ -1,0 +1,27 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h1>Профиль {{ user.username }}</h1>
+<h4>Информация о пользователе</h4>
+<div class="content">
+    <p>Логин: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Имя: {{ user.first_name }}</p>
+    <p>Фамилия: {{ user.last_name }}</p>
+    {% load l10n %}
+    <p>Дата регистрации: {{ user.date_joined|date:"d.m.y" }}</p>
+</div>
+<h4>Список проектов пользователя:</h4>
+<div class="content">
+    <ul class="proj-list">
+        {% for project in projects %}
+        <li><a class="project-title" href="{% url 'project_detail' project.pk %}">{{ project.title }}</a></li>
+        {% empty %}
+        <li>Нет проектов</li>
+        {% endfor %}
+    </ul>
+</div>
+<button class="click-but" onclick="window.location.href='{% url 'project_create' %}'">Создать проект</button>
+{% endblock %}

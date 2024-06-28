@@ -1,0 +1,10 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+    <h1>Выход</h1>
+    <p>Вы успешно вышли из системы.</p>
+    <p>Продолжить без авторизации?</p>
+    <button class="click-but" onclick="window.location.href='{% url 'home' %}'">Да</button>
+{% endblock %}

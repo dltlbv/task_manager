@@ -1,0 +1,14 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Delete project{% endblock %}
+
+{% block content %}
+<h1>Удалить проект</h1>
+<form method="post">
+    {% csrf_token %}
+    <p>Вы уверены, что хотите удалить "{{ project.title }}"?</p>
+    <button class="form-button" type="submit">Да</button>
+</form>
+<div class="canc-block">
+<a class="cancel" href="{% url 'projects_list' %}">Отмена</a></div>
+{% endblock %}
